@@ -82,14 +82,17 @@ th {
     background-color: #007bff;
 }
 
-.edit-btn {
-    background-color: #ffc107;
+.action-buttons {
     color: #000;
     border: none;
     padding: 5px;
     cursor: pointer;
     border-radius: 3px;
     transition: 0.3s;
+}
+
+.edit-btn {
+    background-color: #ffc107;
 }
 
 .edit-btn:hover{
@@ -98,12 +101,6 @@ th {
 
 .delete-btn {
     background-color: #dc3545;
-    color: #000;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: 0.3s;
 }
 
 .delete-btn:hover{
