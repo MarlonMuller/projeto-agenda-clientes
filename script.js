@@ -1,6 +1,6 @@
 // Pegar elementos do DOM
 
-const form = document.getElementById("contac-form");
+const form = document.getElementById("contact-form");
 const contactList = document.getElementById("contact-list");
 const exportBtn = document.getElementById("export-btn");
 const searchInput = document.getElementById("search");
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function(){
     if(phoneInput){
         phoneInput.addEventListener("input", function(e) {
             const target = e.target;
-            const value = target.value.replace(/\D/g, '');
+            let value = target.value.replace(/\D/g, '');
 
             if(value.length > 0){
                 if(value.length <= 2){
@@ -91,3 +91,68 @@ async function validatePhoneNumber(phone){
     }
 
 }
+
+//Adicionar contato ou editar/deletar um contato existente
+
+form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const phone = phoneInput.value;
+    const email = document.getElementById("email").value;
+    const editIndex = editIndexInput.value;
+
+    const isValidPhone = await validatePhoneNumber(phone);
+
+    if(!isValidPhone) return;
+
+    if(editIndex == "") {
+        contacts.push({name, phone, email});
+    } else {
+        contacts[editIndex] = { name, phone, email };
+        editIndexInput.value = "";
+        saveBtn.textContent = "Adicionar Cliente";
+    }
+
+    saveContacts();
+    renderContacts();
+    form.reset();
+})
+
+function editContact(index){
+    const contact = contacts[index];
+    document.getElementById("name").value = contact.name;
+    document.getElementById("phone").value = contact.phone;
+    document.getElementById("email").value = contact.email;
+    editIndexInput.value = index;
+    saveBtn.textContent = "Salvar edição";
+}
+
+function deleteContact(index){
+    contacts.splice(index, 1);
+    saveContacts();
+    searchInput.value = "";
+    renderContacts();
+}
+
+// Exportar para o excel
+
+function exportToExcel(){
+    const worksheet = XLSX.utils.json_to_sheet(contacts);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Contatos");
+
+    XLSX.utils.sheet_add_aoa(worksheet, [["Nome", "Telefone", "Email"]], { origin: "A1" });
+
+    XLSX.writeFile(workbook, "agenda_contatos.xlsx");
+}
+
+exportBtn.addEventListener("click", exportToExcel);
+
+// Filtrar valores no input de busca
+
+searchInput.addEventListener("input", function(){
+    renderContacts(searchInput.value);
+})
+
+renderContacts();
