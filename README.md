@@ -1,4 +1,4 @@
-# 🔐 Projeto Agenda de Clientes
+# 📒 Projeto Agenda de Clientes
 
 Aplicação web simples para gerenciamento de clientes — permite cadastro rápido e exportação de dados para Excel. Desenvolvida com HTML, CSS e JavaScript.
 
